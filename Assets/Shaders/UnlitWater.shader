@@ -22,7 +22,6 @@ Shader "Custom/UnlitWater"
 
         [NoScaleOffset] _CubeMap ("Cube map", Cube) = "white" {}
 
-        [HideInInspector]_ReflectionTexture ("Reflection texture", 2D) = "white" {}
         _FresnelStrength ("Fresnel strength", Range(0, 1)) = 0.5
     }
     SubShader
@@ -82,7 +81,6 @@ Shader "Custom/UnlitWater"
             sampler2D _CameraDepthTexture;
             sampler2D _CameraNormalsTexture;
             samplerCUBE _CubeMap;
-            sampler2D _ReflectionTexture;
 
             float _TideHeight, _TideSpeed, _ScrollSpeed1, _ScrollSpeed2, _MapsIntensity, _AlphaLerp, _DepthMaxDistance,
             _Smoothness, _BumpScale, _WaterColorIntensity, _ShallowColorIntensity, _FresnelStrength;
@@ -166,7 +164,6 @@ Shader "Custom/UnlitWater"
 
                 float3 reflectionVector = reflect(-viewVector, worldSpaceNormal);
                 float4 cubeMap = texCUBE(_CubeMap, reflectionVector);
-                float3 reflection = tex2D(_ReflectionTexture, reflectionVector);
 
                 float fresnel = dot(viewVector, worldSpaceNormal);
                 fresnel = pow(1 - fresnel, 3) * _FresnelStrength;
